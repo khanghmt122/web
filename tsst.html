@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grid Areas Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Courier New", Courier, monospace;
+      background: #eee;
+    }
+
+    /* ====== 1) KHUNG TRANG CHINH ======
+         Bat buoc: display:grid + grid-template-areas de chia khu vuc ro rang.
+         Khong bat buoc nhung nen co: max-width de khung dep hon tren man hinh lon. */
+    .page {
+      display: grid;
+      /* bat buoc neu muon dung Grid */
+      grid-template-columns: 260px 1fr;
+      /* cot trai co dinh + cot noi dung co gian */
+      grid-template-areas: "aside content";
+      /* dat ten vung de de doc/de sua */
+      width: 100%;
+      max-width: 1200px;
+      /* khong bat buoc, chi de layout gon hon */
+      min-height: 100vh;
+      /* khong bat buoc, nhung hay dung cho full man hinh */
+      margin: 0 auto;
+      /* canh giua khung khi co max-width */
+      background: white;
+    }
+
+    /* ====== 2) COT TRAI (ASIDE) ======
+         Chuyen tu flex sang grid: 3 hang = avatar, menu, footer.
+         1fr o giua giup menu "an" phan chieu cao con lai. */
+    .aside {
+      grid-area: aside;
+      /* noi phan tu nay vao vung 'aside' o .page */
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      /* avatar - menu - thong tin cuoi */
+      min-height: 100vh;
+      background-color: black;
+    }
+
+    .aside img {
+      width: 100%;
+      border-radius: 70%;
+      /* khong bat buoc, chi de tao hinh tron/bo goc */
+      object-fit: cover;
+      display: block;
+    }
+
+    .menu {
+      display: grid;
+      /* dung grid de tao khoang cach menu deu */
+      gap: 30px;
+      padding: 20px 0;
+      align-content: start;
+      /* khong bat buoc, de menu nam tren cung */
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: white;
+      padding-left: 100px;
+      /* khong bat buoc, chi de canh le trai */
+      border: 1px solid green;
+      padding-top: 2px;
+      margin-top: 0;
+      /* bo margin-top lon de tranh vo layout */
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    .menu :hover {
+      background: #0a8f08;
+    }
+
+    /* ====== 3) KHU NOI DUNG BEN PHAI ======
+         Day la Grid Areas cho 3 khoi: banner, gioi thieu, form.
+         Nen dung khi layout theo 2 chieu va muon de "nhin" bo cuc. */
+    .content {
+      grid-area: content;
+      display: grid;
+      grid-template-rows: 200px auto auto;
+      /* cao co dinh cho banner, duoi tu dong */
+      grid-template-areas:
+        "main"
+        "sec1"
+        "sec2";
+    }
+
+    .main {
+      grid-area: main;
+      /* gan vao vung main trong .content */
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .main img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+    }
+
+    .main header,
+    .main p {
+      z-index: 1;
+      position: relative;
+      font-size: 30px;
+      color: white;
+      padding-left: 20px;
+      padding-top: 20px;
+    }
+
+    .main header {
+      font-size: 100px;
+      font-weight: bold;
+    }
+
+    .main p {
+      max-width: 90%;
+      margin-top: auto;
+    }
+
+    .footer {
+      margin-top: auto;
+      padding: 14px 10px;
+    }
+
+    .footer p {
+      color: white;
+      margin-bottom: 10px;
+      padding-left: 40px;
+    }
+
+    .sec1 {
+      grid-area: sec1;
+      /* gan vao vung sec1 trong .content */
+      height: auto;
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      background: #0a8f08;
+      color: white;
+    }
+
+    .sec1 .img1-frame {
+      display: block;
+      margin: 10px auto 12px;
+      width: 340px;
+      max-width: 90%;
+      border: 20px solid white;
+      background: white;
+    }
+
+    .sec1 .img1 {
+      width: 100%;
+      display: block;
+      transform: rotate(14deg);
+    }
+
+    .input-wrap {
+      position: relative;
+      width: 260px;
+      margin: 0 auto;
+      border: 2px solid black;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      height: 32px;
+      border: 2px solid black;
+      border-radius: 3px;
+      padding: 0 62px 0 8px;
+    }
+
+    .sec1 .icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      position: absolute;
+      top: 50%;
+    }
+
+    .sec1 .icon.i1 {
+      right: 34px;
+      transform: translateY(-50%) rotate(-10deg);
+    }
+
+    .sec1 .icon.i2 {
+      right: 8px;
+      transform: translateY(-50%) rotate(10deg);
+    }
+
+    .sec2 {
+      grid-area: sec2;
+      /* gan vao vung sec2 trong .content */
+      min-height: auto;
+      background-color: aqua;
+      width: 100%;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .sec2-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(170px, 1fr));
+      gap: 10px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .sec2 input,
+    .sec2 select {
+      border: 2px solid black;
+      border-radius: 3px;
+      padding: 8px;
+      width: 100%;
+    }
+
+    .sec2 .btn {
+      grid-column: 1 / -1;
+      justify-self: center;
+      padding: 8px 24px;
+      border: 2px solid black;
+      border-radius: 4px;
+      background: white;
+    }
+
+    .sec2 .btn:hover {
+      background: #0a8f08;
+      color: white;
+    }
+
+    /* ====== 4) RESPONSIVE CO BAN ======
+         Khong bat buoc, nhung rat can thiet neu muon xem tot tren dien thoai.
+         Khi man hinh hep, dua aside len tren de de doc hon. */
+    @media (max-width: 900px) {
+      .page {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "aside"
+          "content";
+      }
+
+      .aside {
+        min-height: auto;
+        /* khong can full chieu cao tren mobile */
+      }
+
+      .menu a {
+        padding-left: 20px;
+        /* giam le trai de vua man hinh nho */
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="aside">
+      <img src="y1.png" />
+      <nav class="menu">
+        <a href="#">Home</a>
+        <a href="#">Talk</a>
+        <a href="#">About</a>
+      </nav>
+      <footer class="footer">
+        <p>ID:24680941</p>
+        <p>Name:HoLuuBaoKhang</p>
+        <p>Class:KTPM20A</p>
+      </footer>
+    </div>
+
+    <div class="content">
+      <div class="main">
+        <header>HLBK</header>
+        <p>Xin chao toi la HLBK</p>
+        <img src="y1.png" />
+      </div>
+      <section class="sec1">
+        <h2>Dieu ve toi</h2>
+        <p>bla bla balbla lbla</p>
+        <div class="img1-frame">
+          <img class="img1" src="y1.png" />
+        </div>
+        <div class="input-wrap">
+          <input type="text" placeholder="Remo" />
+          <img class="icon i1" src="y1.png" />
+          <img class="icon i2" src="y1.png" />
+        </div>
+      </section>
+      <section class="sec2">
+        <h2>Dang ky khoa hoc</h2>
+        <div class="sec2-form">
+          <input type="text" placeholder="FullName" />
+          <input type="text" placeholder="Mobile" />
+          <input type="time" placeholder="6:30 PM" />
+          <select>
+            <option value="">Select Branches</option>
+            <option value="web">Web Development</option>
+            <option value="mobile">Mobile Development</option>
+            <option value="ai">AI Engineering</option>
+          </select>
+          <input type="date" />
+          <input type="text" placeholder="Comment(Optional)" />
+          <button class="btn" type="submit">submit</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+
+</html>
